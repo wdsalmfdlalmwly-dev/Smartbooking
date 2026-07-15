@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="htmlRoot">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title id="pageTitle">تسجيل الدخول - وكالة الدواحي للسفر والسياحة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-light lang-ar" id="pageBody">
+
+<div class="navbar">
+  <div class="brand" id="brandText">وكالة الدواحي ✦ <span id="subBrandText">للسفر والسياحة</span></div>
+  <div class="nav-links">
+    <a href="login.html" class="btn small" id="loginNavLabel">تسجيل الدخول</a>
+    <span class="nav-controls">
+      <button type="button" class="lang-btn" onclick="setLang('ar')">🇸🇦 عربي</button>
+      <button type="button" class="lang-btn" onclick="setLang('en')">🇬🇧 English</button>
+      <button type="button" class="theme-btn" onclick="setTheme('light')">☀️</button>
+      <button type="button" class="theme-btn" onclick="setTheme('dark')">🌙</button>
+    </span>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="form-box card glow-form">
+    <h2 class="center" id="titleLogin">تسجيل الدخول</h2>
+    <p class="subtitle center" id="welcomeText">وكالة الدواحي للسفر والسياحة</p>
+    <div class="flash error" id="flashMsg" style="display:none"></div>
+    <form id="loginForm" onsubmit="return handleLogin(event)">
+      <label id="labelEmail">البريد الإلكتروني</label>
+      <input type="email" name="email" id="emailInput" required>
+      <label id="labelPassword">كلمة المرور</label>
+      <input type="password" name="password" id="passwordInput" required>
+      <div class="center" style="margin-top:20px">
+        <button class="btn" type="submit" style="width:100%" id="btnLogin">تسجيل الدخول</button>
+      </div>
+    </form>
+    <p class="center" style="margin-top:16px">
+      <span id="noAccountText">ليس لديك حساب؟</span>
+      <a href="signup.html" style="color:var(--gold-soft)" id="createAccountLink">إنشاء حساب جديد</a>
+    </p>
+  </div>
+</div>
+
+<div class="footer-note" id="footerText">وكالة الدواحي للسفر والسياحة — رحلتك تبدأ من هنا</div>
+
+<script src="theme.js"></script>
+<script>
+const TR = {
+  brand: {ar:'وكالة الدواحي ✦', en:'Dawahi Agency ✦'},
+  subBrand: {ar:'للسفر والسياحة', en:'Travel & Tourism'},
+  login: {ar:'تسجيل الدخول', en:'Login'},
+  welcome: {ar:'وكالة الدواحي للسفر والسياحة', en:'Dawahi Travel & Tourism Agency'},
+  email: {ar:'البريد الإلكتروني', en:'Email'},
+  password: {ar:'كلمة المرور', en:'Password'},
+  loginButton: {ar:'تسجيل الدخول', en:'Login'},
+  noAccount: {ar:'ليس لديك حساب؟', en:'No account?'},
+  createAccount: {ar:'إنشاء حساب جديد', en:'Create New Account'},
+  footer: {ar:'وكالة الدواحي للسفر والسياحة — رحلتك تبدأ من هنا', en:'Dawahi Travel & Tourism — Your journey starts here'},
+  errorGeneric: {ar:'تجربة عرض فقط — لا يوجد اتصال بخادم حقيقي (اذهب للصفحة الرئيسية لمعاينة الموقع)', en:'Demo only — no real server connected (go to Home to preview the site)'},
+};
+
+let currentLang = 'ar';
+
+function setLang(lang) {
+  currentLang = lang;
+  const body = document.getElementById('pageBody');
+  const html = document.getElementById('htmlRoot');
+  body.classList.remove('lang-ar', 'lang-en');
+  body.classList.add('lang-' + lang);
+  html.setAttribute('lang', lang);
+  html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+
+  document.getElementById('brandText').childNodes[0].textContent = TR.brand[lang] + ' ';
+  document.getElementById('subBrandText').textContent = TR.subBrand[lang];
+  document.getElementById('loginNavLabel').textContent = TR.login[lang];
+  document.getElementById('titleLogin').textContent = TR.login[lang];
+  document.getElementById('welcomeText').textContent = TR.welcome[lang];
+  document.getElementById('labelEmail').textContent = TR.email[lang];
+  document.getElementById('labelPassword').textContent = TR.password[lang];
+  document.getElementById('btnLogin').textContent = TR.loginButton[lang];
+  document.getElementById('noAccountText').textContent = TR.noAccount[lang];
+  document.getElementById('createAccountLink').textContent = TR.createAccount[lang];
+  document.getElementById('footerText').textContent = TR.footer[lang];
+  document.getElementById('pageTitle').textContent = TR.login[lang] + ' - ' + TR.welcome[lang];
+}
+
+function handleLogin(e) {
+  e.preventDefault();
+  const form = e.target;
+  const flash = document.getElementById('flashMsg');
+  flash.className = 'flash error';
+
+  const btn = document.getElementById('btnLogin');
+  btn.disabled = true;
+
+  fetch('/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: form.email.value,
+      password: form.password.value
+    })
+  })
+    .then(r => r.json())
+    .then(data => {
+      if (!data.ok) {
+        flash.textContent = data.error || 'فشل تسجيل الدخول';
+        flash.style.display = 'block';
+        btn.disabled = false;
+        return;
+      }
+      window.location.href = 'home.html';
+    })
+    .catch(() => {
+      flash.textContent = 'تعذر الاتصال بالسيرفر. تأكد أن السيرفر (app.py) شغال.';
+      flash.style.display = 'block';
+      btn.disabled = false;
+    });
+
+  return false;
+}
+</script>
+
+</body>
+</html>

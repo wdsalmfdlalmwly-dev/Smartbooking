@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الخطوط الجوية السودانية - وكالة الدواحي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-light lang-ar" id="pageBody">
+
+<div class="navbar">
+  <div class="brand">وكالة الدواحي ✦ <span>للسفر والسياحة</span></div>
+  <div class="nav-links">
+    <a href="my-bookings.html">حجوزاتي</a>
+    <a href="home.html">شركات الطيران</a>
+    <span style="color:var(--sand)" id="navUsername">...</span>
+    <a href="#" class="btn small danger" onclick="doLogout(); return false;">خروج</a>
+    <span class="nav-controls">
+      <button type="button" class="theme-btn" onclick="setTheme('light')">☀️</button>
+      <button type="button" class="theme-btn" onclick="setTheme('dark')">🌙</button>
+    </span>
+  </div>
+</div>
+
+<div class="wrap">
+  <h1>الخطوط الجوية السودانية</h1>
+
+  <div class="tabs">
+    <a class="tab active" id="tabFlights" onclick="showTab('flights')">الرحلات</a>
+    <a class="tab" id="tabBaggage" onclick="showTab('baggage')">الأمتعة والالتزام</a>
+    <a class="tab" id="tabHotels" onclick="showTab('hotels')">الفنادق</a>
+  </div>
+
+  <!-- الرحلات -->
+  <div id="panelFlights">
+    <div class="card">
+      <div class="tabs">
+        <a class="tab active" id="scopeLocal" onclick="showScope('local')">محلي</a>
+        <a class="tab" id="scopeIntl" onclick="showScope('intl')">دولي</a>
+      </div>
+      <h3 id="scopeTitle">محلي - الخطوط الجوية السودانية</h3>
+
+      <div id="localFlights">
+        <div class="flight-row">
+          <div>
+            <div class="route">الخرطوم ✈ بورتسودان</div>
+            <div class="subtitle">مغادرة 08:00 - وصول 09:15 (1س 15د)</div>
+          </div>
+          <div class="price">45000 ج.س</div>
+          <a class="btn small" href="select-class.html">اختيار الدرجة</a>
+        </div>
+        <div class="flight-row">
+          <div>
+            <div class="route">الخرطوم ✈ نيالا</div>
+            <div class="subtitle">مغادرة 11:30 - وصول 13:00 (1س 30د)</div>
+          </div>
+          <div class="price">52000 ج.س</div>
+          <a class="btn small" href="select-class.html">اختيار الدرجة</a>
+        </div>
+        <div class="flight-row">
+          <div>
+            <div class="route">الخرطوم ✈ كسلا</div>
+            <div class="subtitle">مغادرة 15:00 - وصول 16:00 (1س)</div>
+          </div>
+          <div class="price">38000 ج.س</div>
+          <a class="btn small" href="select-class.html">اختيار الدرجة</a>
+        </div>
+      </div>
+
+      <div id="intlFlights" style="display:none">
+        <div class="flight-row">
+          <div>
+            <div class="route">الخرطوم ✈ القاهرة</div>
+            <div class="subtitle">مغادرة 09:00 - وصول 12:30 (2س 30د)</div>
+          </div>
+          <div class="price">210000 ج.س</div>
+          <a class="btn small" href="select-class.html">اختيار الدرجة</a>
+        </div>
+        <div class="flight-row">
+          <div>
+            <div class="route">الخرطوم ✈ دبي</div>
+            <div class="subtitle">مغادرة 14:00 - وصول 19:30 (3س 30د)</div>
+          </div>
+          <div class="price">320000 ج.س</div>
+          <a class="btn small" href="select-class.html">اختيار الدرجة</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- الأمتعة -->
+  <div id="panelBaggage" style="display:none">
+    <div class="card">
+      <h3>الأمتعة والالتزام - الخطوط الجوية السودانية</h3>
+      <table>
+        <tr><th>الدرجة</th><th>الأمتعة (كجم)</th><th>حقيبة يد</th></tr>
+        <tr><td>الدرجة الأولى</td><td>40</td><td>قطعتان</td></tr>
+        <tr><td>درجة رجال الأعمال والمستثمرين</td><td>30</td><td>قطعتان</td></tr>
+        <tr><td>الدرجة الثانية</td><td>25</td><td>قطعة واحدة</td></tr>
+        <tr><td>الدرجة العادية</td><td>20</td><td>قطعة واحدة</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- الفنادق -->
+  <div id="panelHotels" style="display:none">
+    <div class="card">
+      <h3>الفنادق - الخطوط الجوية السودانية</h3>
+      <div class="tabs">
+        <a class="tab active">الكل</a>
+        <a class="tab">5 ★</a>
+        <a class="tab">4 ★</a>
+        <a class="tab">3 ★</a>
+      </div>
+      <div class="grid">
+        <a class="hotel-card" href="hotel-rooms.html">
+          <div class="emoji-big">🏨</div>
+          <h3>فندق النخيل الذهبي</h3>
+          <div class="stars">★★★★★</div>
+          <div class="badge">الخرطوم - السودان</div>
+        </a>
+        <a class="hotel-card" href="hotel-rooms.html">
+          <div class="emoji-big">🏨</div>
+          <h3>فندق الأفق</h3>
+          <div class="stars">★★★★☆</div>
+          <div class="badge">الخرطوم - السودان</div>
+        </a>
+        <a class="hotel-card" href="hotel-rooms.html">
+          <div class="emoji-big">🏨</div>
+          <h3>فندق المسافر</h3>
+          <div class="stars">★★★☆☆</div>
+          <div class="badge">بورتسودان - السودان</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-note">وكالة الدواحي للسفر والسياحة — رحلتك تبدأ من هنا</div>
+
+<script src="theme.js"></script>
+<script>
+function showTab(tab) {
+  document.getElementById('panelFlights').style.display = tab === 'flights' ? 'block' : 'none';
+  document.getElementById('panelBaggage').style.display = tab === 'baggage' ? 'block' : 'none';
+  document.getElementById('panelHotels').style.display = tab === 'hotels' ? 'block' : 'none';
+  document.getElementById('tabFlights').classList.toggle('active', tab === 'flights');
+  document.getElementById('tabBaggage').classList.toggle('active', tab === 'baggage');
+  document.getElementById('tabHotels').classList.toggle('active', tab === 'hotels');
+}
+function showScope(scope) {
+  document.getElementById('localFlights').style.display = scope === 'local' ? 'block' : 'none';
+  document.getElementById('intlFlights').style.display = scope === 'intl' ? 'block' : 'none';
+  document.getElementById('scopeLocal').classList.toggle('active', scope === 'local');
+  document.getElementById('scopeIntl').classList.toggle('active', scope === 'intl');
+  document.getElementById('scopeTitle').textContent = (scope === 'local' ? 'محلي' : 'دولي') + ' - الخطوط الجوية السودانية';
+}
+</script>
+
+<script>
+fetch('/api/session').then(r => r.json()).then(d => {
+  if (!d.logged_in) { window.location.href = 'login.html'; return; }
+  const el = document.getElementById('navUsername');
+  if (el) el.textContent = d.username;
+});
+function doLogout() {
+  fetch('/api/logout', { method: 'POST' }).then(() => { window.location.href = 'login.html'; });
+}
+</script>
+</body>
+</html>

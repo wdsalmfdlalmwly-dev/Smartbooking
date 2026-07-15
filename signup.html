@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>إنشاء حساب - وكالة الدواحي للسفر والسياحة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-light lang-ar" id="pageBody">
+
+<div class="navbar">
+  <div class="brand">وكالة الدواحي ✦ <span>للسفر والسياحة</span></div>
+  <div class="nav-links">
+    <a href="login.html" class="btn small">تسجيل الدخول</a>
+    <span class="nav-controls">
+      <button type="button" class="theme-btn" onclick="setTheme('light')">☀️</button>
+      <button type="button" class="theme-btn" onclick="setTheme('dark')">🌙</button>
+    </span>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="form-box card glow-form" style="max-width:520px">
+    <h2 class="center">إنشاء حساب</h2>
+    <div class="flash error" id="flashMsg" style="display:none"></div>
+    <form id="signupForm" onsubmit="return handleSignup(event)">
+      <label>اسم المستخدم</label>
+      <input type="text" name="username" required minlength="3">
+
+      <label>البريد الإلكتروني</label>
+      <input type="email" name="email" required>
+
+      <label>رقم الهاتف</label>
+      <input type="tel" name="phone" required minlength="8">
+
+      <label>الدولة</label>
+      <select name="country" required>
+        <option value="">الدولة</option>
+        <option value="السودان">السودان</option>
+        <option value="مصر">مصر</option>
+        <option value="السعودية">السعودية</option>
+        <option value="الإمارات">الإمارات</option>
+        <option value="قطر">قطر</option>
+        <option value="أخرى">أخرى</option>
+      </select>
+
+      <label>تاريخ إصدار جواز السفر</label>
+      <input type="date" name="passport_issue" required>
+
+      <label>تاريخ انتهاء جواز السفر</label>
+      <input type="date" name="passport_expiry" required>
+
+      <label>صورة جواز السفر الساري المفعول</label>
+      <input type="file" name="passport" accept="image/*" required>
+
+      <label>كود الدعوة / التحقق (إن وجد)</label>
+      <input type="text" name="code" placeholder="اختياري">
+
+      <label>كلمة المرور</label>
+      <input type="password" name="password1" required minlength="6">
+
+      <label>إعادة كتابة كلمة المرور</label>
+      <input type="password" name="password2" required minlength="6">
+
+      <div class="center" style="margin-top:20px">
+        <button class="btn" type="submit" style="width:100%">تسجيل</button>
+      </div>
+    </form>
+    <p class="center" style="margin-top:16px">
+      لديك حساب بالفعل؟ <a href="login.html" style="color:var(--gold-soft)">تسجيل الدخول</a>
+    </p>
+  </div>
+</div>
+
+<div class="footer-note">وكالة الدواحي للسفر والسياحة — رحلتك تبدأ من هنا</div>
+
+<script src="theme.js"></script>
+<script>
+function handleSignup(e) {
+  e.preventDefault();
+  const form = e.target;
+  const pw1 = form.password1.value;
+  const pw2 = form.password2.value;
+  const issue = new Date(form.passport_issue.value);
+  const expiry = new Date(form.passport_expiry.value);
+  const flash = document.getElementById('flashMsg');
+  flash.className = 'flash error';
+  flash.style.display = 'none';
+
+  if (pw1 !== pw2) {
+    flash.textContent = 'كلمتا المرور غير متطابقتين';
+    flash.style.display = 'block';
+    return false;
+  }
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  if (expiry < today) {
+    flash.textContent = 'جواز السفر منتهي الصلاحية! الرجاء استخدام جواز سفر ساري.';
+    flash.style.display = 'block';
+    return false;
+  }
+  if (issue > expiry) {
+    flash.textContent = 'تاريخ الإصدار يجب أن يكون قبل تاريخ الانتهاء';
+    flash.style.display = 'block';
+    return false;
+  }
+
+  const submitBtn = form.querySelector('button[type=submit]');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'جارٍ الإنشاء...';
+
+  fetch('/api/signup', { method: 'POST', body: new FormData(form) })
+    .then(r => r.json())
+    .then(data => {
+      if (!data.ok) {
+        flash.className = 'flash error';
+        flash.textContent = data.error || 'حدث خطأ غير متوقع';
+        flash.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'تسجيل';
+        return;
+      }
+      flash.className = 'flash ok';
+      flash.textContent = 'تم إنشاء الحساب بنجاح — سيتم تحويلك لصفحة الدخول';
+      flash.style.display = 'block';
+      setTimeout(() => { window.location.href = 'login.html'; }, 1200);
+    })
+    .catch(() => {
+      flash.className = 'flash error';
+      flash.textContent = 'تعذر الاتصال بالسيرفر. تأكد أن السيرفر (app.py) شغال.';
+      flash.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'تسجيل';
+    });
+
+  return false;
+}
+</script>
+
+</body>
+</html>

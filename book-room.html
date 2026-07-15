@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>حجز الغرفة - وكالة الدواحي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-light lang-ar" id="pageBody">
+
+<div class="navbar">
+  <div class="brand">وكالة الدواحي ✦ <span>للسفر والسياحة</span></div>
+  <div class="nav-links">
+    <a href="my-bookings.html">حجوزاتي</a>
+    <a href="home.html">شركات الطيران</a>
+    <span style="color:var(--sand)" id="navUsername">...</span>
+    <a href="#" class="btn small danger" onclick="doLogout(); return false;">خروج</a>
+    <span class="nav-controls">
+      <button type="button" class="theme-btn" onclick="setTheme('light')">☀️</button>
+      <button type="button" class="theme-btn" onclick="setTheme('dark')">🌙</button>
+    </span>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="form-box card glow-form">
+    <h2 class="center">حجز الغرفة</h2>
+    <p class="subtitle center">فندق النخيل الذهبي — غرفة مزدوجة</p>
+    <form onsubmit="return handleBook(event)">
+      <label>تاريخ الوصول</label>
+      <input type="date" name="checkin" required>
+      <label>تاريخ المغادرة</label>
+      <input type="date" name="checkout" required>
+      <div class="center" style="margin-top:20px">
+        <button class="btn" type="submit" style="width:100%">تأكيد حجز الغرفة</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="footer-note">وكالة الدواحي للسفر والسياحة — رحلتك تبدأ من هنا</div>
+
+<script src="theme.js"></script>
+<script>
+function handleBook(e) {
+  e.preventDefault();
+  const form = e.target;
+  const checkin = form.checkin.value;
+  const checkout = form.checkout.value;
+  const btn = form.querySelector('button[type=submit]');
+
+  if (new Date(checkout) <= new Date(checkin)) {
+    alert('تاريخ المغادرة يجب أن يكون بعد تاريخ الوصول');
+    return false;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'جارٍ الحجز...';
+
+  fetch('/api/book', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      kind: 'hotel',
+      title: 'فندق النخيل الذهبي — غرفة مزدوجة',
+      details: 'تاريخ الوصول: ' + checkin + ' / تاريخ المغادرة: ' + checkout,
+      price: 165000
+    })
+  })
+    .then(r => r.json())
+    .then(data => {
+      if (!data.ok) {
+        alert(data.error || 'تعذر إتمام الحجز');
+        btn.disabled = false;
+        btn.textContent = 'تأكيد حجز الغرفة';
+        return;
+      }
+      window.location.href = 'booking-detail.html?code=' + encodeURIComponent(data.code);
+    })
+    .catch(() => {
+      alert('تعذر الاتصال بالسيرفر');
+      btn.disabled = false;
+      btn.textContent = 'تأكيد حجز الغرفة';
+    });
+
+  return false;
+}
+</script>
+
+<script>
+fetch('/api/session').then(r => r.json()).then(d => {
+  if (!d.logged_in) { window.location.href = 'login.html'; return; }
+  const el = document.getElementById('navUsername');
+  if (el) el.textContent = d.username;
+});
+function doLogout() {
+  fetch('/api/logout', { method: 'POST' }).then(() => { window.location.href = 'login.html'; });
+}
+</script>
+</body>
+</html>

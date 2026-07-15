@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>غرف الفندق - وكالة الدواحي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-light lang-ar" id="pageBody">
+
+<div class="navbar">
+  <div class="brand">وكالة الدواحي ✦ <span>للسفر والسياحة</span></div>
+  <div class="nav-links">
+    <a href="my-bookings.html">حجوزاتي</a>
+    <a href="home.html">شركات الطيران</a>
+    <span style="color:var(--sand)" id="navUsername">...</span>
+    <a href="#" class="btn small danger" onclick="doLogout(); return false;">خروج</a>
+    <span class="nav-controls">
+      <button type="button" class="theme-btn" onclick="setTheme('light')">☀️</button>
+      <button type="button" class="theme-btn" onclick="setTheme('dark')">🌙</button>
+    </span>
+  </div>
+</div>
+
+<div class="wrap">
+  <h1>فندق النخيل الذهبي <span class="stars">★★★★★</span></h1>
+  <p class="subtitle">الخرطوم - السودان</p>
+
+  <div class="card">
+    <h3>غرفة مفردة</h3>
+    <p class="subtitle">السعة: شخص واحد</p>
+    <p class="price">35,000 ج.س / لليلة</p>
+    <a class="btn small" href="book-room.html">حجز الغرفة</a>
+  </div>
+
+  <div class="card">
+    <h3>غرفة مزدوجة</h3>
+    <p class="subtitle">السعة: شخصان</p>
+    <p class="price">55,000 ج.س / لليلة</p>
+    <a class="btn small" href="book-room.html">حجز الغرفة</a>
+  </div>
+
+  <div class="card">
+    <h3>جناح عائلي</h3>
+    <p class="subtitle">السعة: 4 أشخاص</p>
+    <p class="price">95,000 ج.س / لليلة</p>
+    <a class="btn small" href="book-room.html">حجز الغرفة</a>
+  </div>
+</div>
+
+<div class="footer-note">وكالة الدواحي للسفر والسياحة — رحلتك تبدأ من هنا</div>
+
+<script src="theme.js"></script>
+
+<script>
+fetch('/api/session').then(r => r.json()).then(d => {
+  if (!d.logged_in) { window.location.href = 'login.html'; return; }
+  const el = document.getElementById('navUsername');
+  if (el) el.textContent = d.username;
+});
+function doLogout() {
+  fetch('/api/logout', { method: 'POST' }).then(() => { window.location.href = 'login.html'; });
+}
+</script>
+</body>
+</html>

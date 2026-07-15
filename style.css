@@ -1,0 +1,172 @@
+:root {
+  --bg1: #0b1220;
+  --bg2: #0f1b30;
+  --gold: #d4af37;
+  --gold-soft: #e8c766;
+  --sand: #c9a876;
+  --text: #f2e9d8;
+  --muted: #9fb0c9;
+  --card: #121f38cc;
+  --border: #2a3b5c;
+  --danger: #e0645a;
+  --ok: #5cc98a;
+  --input-bg: #0c1526;
+  --input-border: #2a3b5c;
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+  --transition: 0.3s ease;
+  --glow-color: var(--gold);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Cairo', 'Tahoma', sans-serif;
+  direction: rtl;
+  color: var(--text);
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(212,175,55,.10), transparent 40%),
+    radial-gradient(circle at 85% 10%, rgba(212,175,55,.08), transparent 35%),
+    linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 60%, #17233a 100%);
+  background-attachment: fixed;
+  transition: background var(--transition), color var(--transition);
+}
+body.lang-en { direction: ltr; text-align: left; }
+a { color: inherit; text-decoration: none; }
+.navbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 26px; background: rgba(10,16,30,.75); backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 20;
+  flex-wrap: wrap;
+}
+.brand { font-size: 1.25rem; font-weight: 800; color: var(--gold-soft); letter-spacing: .5px; }
+.brand span { color: var(--sand); font-weight: 400; font-size: .85rem; display: block; }
+.nav-links { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.nav-links a { color: var(--muted); font-size: .92rem; transition: color .2s; }
+.nav-links a:hover { color: var(--gold-soft); }
+.nav-controls { display: flex; gap: 8px; align-items: center; }
+.lang-btn, .theme-btn {
+  background: transparent; border: 1px solid var(--border); color: var(--text);
+  padding: 5px 10px; border-radius: 20px; cursor: pointer; font-size: .8rem;
+  transition: background .2s, color .2s; font-family: inherit;
+}
+.lang-btn:hover, .theme-btn:hover { background: var(--gold); color: #1a1305; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 26px 18px 60px; }
+.card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+  padding: 22px; margin-bottom: 18px; box-shadow: var(--shadow);
+  transition: background var(--transition), border var(--transition);
+}
+h1, h2, h3 { color: var(--gold-soft); margin-top: 0; }
+.subtitle { color: var(--muted); font-size: .9rem; }
+.btn {
+  display: inline-block; padding: 11px 22px; border-radius: 10px; border: none;
+  background: linear-gradient(135deg, var(--gold), #b8912b); color: #1a1305; font-weight: 800;
+  cursor: pointer; font-size: .95rem; transition: .15s;
+}
+.btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.btn.secondary { background: transparent; border: 1px solid var(--gold); color: var(--gold-soft); }
+.btn.danger { background: linear-gradient(135deg, #c94a41, #8f2f29); color: #fff; }
+.btn.small { padding: 7px 14px; font-size: .82rem; }
+label { display: block; margin: 12px 0 6px; font-size: .88rem; color: var(--muted); }
+input[type=text], input[type=email], input[type=password], input[type=tel],
+input[type=date], input[type=file], select {
+  width: 100%; padding: 11px 13px; border-radius: 10px; border: 1px solid var(--input-border);
+  background: var(--input-bg); color: var(--text); font-size: .95rem; font-family: inherit;
+}
+input:focus, select:focus { outline: 1px solid var(--gold); }
+.form-box { max-width: 420px; margin: 40px auto; }
+.center { text-align: center; }
+.flash { padding: 10px 14px; border-radius: 10px; margin-bottom: 14px; font-size: .9rem; }
+.flash.error { background: #3a1616; color: #f3a49c; border: 1px solid #6b2a24; }
+.flash.ok { background: #123a26; color: #8fe0b3; border: 1px solid #235c3c; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 16px; }
+.airline-card, .hotel-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 18px; text-align: center; transition: .15s; cursor: pointer;
+}
+.airline-card:hover, .hotel-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.emoji-big { font-size: 2.2rem; }
+.tabs { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+.tab {
+  padding: 9px 18px; border-radius: 999px; border: 1px solid var(--border); cursor: pointer;
+  color: var(--muted); font-size: .88rem; background: #0d1729;
+}
+.tab.active { background: var(--gold); color: #1a1305; border-color: var(--gold); font-weight: 800; }
+.flight-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 16px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px;
+  background: #0d1729; flex-wrap: wrap;
+}
+.route { font-weight: 800; font-size: 1.05rem; }
+.badge {
+  display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: .75rem;
+  background: rgba(212,175,55,.15); color: var(--gold-soft); border: 1px solid var(--border);
+}
+.stars { color: var(--gold-soft); letter-spacing: 2px; }
+.price { font-weight: 800; color: var(--ok); font-size: 1.05rem; }
+table { width: 100%; border-collapse: collapse; }
+table th, table td { padding: 10px; border-bottom: 1px solid var(--border); text-align: right; font-size: .9rem; }
+.search-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+.search-bar input, .search-bar select { flex: 1; min-width: 150px; }
+.class-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 12px; }
+.class-opt {
+  border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; background: #0d1729;
+  cursor: pointer;
+}
+.class-opt h3 { margin: 6px 0; font-size: 1rem; }
+.footer-note { color: var(--muted); font-size: .78rem; text-align: center; margin-top: 30px; }
+
+/* إطار مضيء للنماذج */
+.glow-form {
+  box-shadow: 0 0 20px var(--glow-color), 0 0 60px rgba(212,175,55,0.15);
+  border-color: var(--glow-color);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.glow-form:hover {
+  box-shadow: 0 0 30px var(--glow-color), 0 0 80px rgba(212,175,55,0.2);
+}
+
+/* الوضع الليلي */
+body.theme-dark {
+  --bg1: #0a1a2b;
+  --bg2: #0d2840;
+  --gold: #6bb8e0;
+  --gold-soft: #8fd4f0;
+  --sand: #7ab3d0;
+  --text: #e8f4fc;
+  --muted: #8eb8d0;
+  --card: #0a2238cc;
+  --border: #2a5a7a;
+  --input-bg: #0a1a2b;
+  --input-border: #2a5a7a;
+  --shadow: 0 10px 30px rgba(0,40,70,.5);
+  --glow-color: #6bb8e0;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(107,184,224,.12), transparent 40%),
+    radial-gradient(circle at 85% 10%, rgba(107,184,224,.08), transparent 35%),
+    linear-gradient(180deg, #0a1a2b 0%, #0d2840 60%, #123a55 100%);
+}
+body.theme-dark .btn { background: linear-gradient(135deg, #4a9fc9, #2a7aa8); color: #fff; }
+body.theme-dark .btn.secondary { background: transparent; border-color: #6bb8e0; color: #8fd4f0; }
+body.theme-dark .tab.active { background: #4a9fc9; color: #fff; border-color: #4a9fc9; }
+body.theme-dark .navbar { background: rgba(10,26,43,.85); }
+body.theme-dark .brand { color: #8fd4f0; }
+body.theme-dark .brand span { color: #7ab3d0; }
+body.theme-dark .badge { background: rgba(107,184,224,.2); color: #8fd4f0; }
+body.theme-dark .stars { color: #8fd4f0; }
+body.theme-dark .price { color: #7dd4a0; }
+body.theme-dark .flight-row, body.theme-dark .class-opt { background: #0a1a2b; }
+body.theme-dark .tab { background: #0a1a2b; }
+body.theme-dark .airline-card, body.theme-dark .hotel-card { background: #0a2238cc; }
+body.theme-dark h1, body.theme-dark h2, body.theme-dark h3 { color: #8fd4f0; }
+body.theme-dark .flash.ok { background: #0a2a3a; color: #8fd4f0; border-color: #4a9fc9; }
+body.theme-dark .flash.error { background: #2a1a1a; color: #f3a49c; border-color: #6b2a24; }
+body.theme-dark .nav-links a:hover { color: #8fd4f0; }
+body.theme-dark .lang-btn, body.theme-dark .theme-btn { border-color: #2a5a7a; }
+body.theme-dark .lang-btn:hover, body.theme-dark .theme-btn:hover { background: #4a9fc9; color: #fff; }
+body.theme-dark .glow-form { box-shadow: 0 0 20px var(--glow-color), 0 0 60px rgba(107,184,224,0.15); }
+body.theme-dark .glow-form:hover { box-shadow: 0 0 30px var(--glow-color), 0 0 80px rgba(107,184,224,0.2); }
+
+/* شارة الحالة */
+.badge.ok { color: #5cc98a; border-color: #5cc98a; }
+.badge.cancel { color: #e0645a; border-color: #e0645a; }

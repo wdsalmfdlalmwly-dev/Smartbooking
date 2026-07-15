@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>حجوزاتي - وكالة الدواحي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-light lang-ar" id="pageBody">
+
+<div class="navbar">
+  <div class="brand">وكالة الدواحي ✦ <span>للسفر والسياحة</span></div>
+  <div class="nav-links">
+    <a href="my-bookings.html">حجوزاتي</a>
+    <a href="home.html">شركات الطيران</a>
+    <span style="color:var(--sand)" id="navUsername">...</span>
+    <a href="#" class="btn small danger" onclick="doLogout(); return false;">خروج</a>
+    <span class="nav-controls">
+      <button type="button" class="theme-btn" onclick="setTheme('light')">☀️</button>
+      <button type="button" class="theme-btn" onclick="setTheme('dark')">🌙</button>
+    </span>
+  </div>
+</div>
+
+<div class="wrap">
+  <h1>حجوزاتي</h1>
+
+  <div class="card" id="bookingsCard">
+    <p>جارٍ التحميل...</p>
+  </div>
+</div>
+
+<div class="footer-note">وكالة الدواحي للسفر والسياحة — رحلتك تبدأ من هنا</div>
+
+<script src="theme.js"></script>
+
+<script>
+fetch('/api/session').then(r => r.json()).then(d => {
+  if (!d.logged_in) { window.location.href = 'login.html'; return; }
+  const el = document.getElementById('navUsername');
+  if (el) el.textContent = d.username;
+});
+function doLogout() {
+  fetch('/api/logout', { method: 'POST' }).then(() => { window.location.href = 'login.html'; });
+}
+
+const bookingsCard = document.getElementById('bookingsCard');
+
+function loadBookings() {
+  fetch('/api/bookings')
+    .then(r => r.json())
+    .then(data => {
+      if (!data.ok || data.bookings.length === 0) {
+        bookingsCard.innerHTML = '<p>لا توجد حجوزات حتى الآن.</p>';
+        return;
+      }
+      bookingsCard.innerHTML = data.bookings.map(b => `
+        <div class="flight-row">
+          <div>
+            <div class="route">${b.title}</div>
+            <div class="subtitle">${b.code} — ${b.details || ''}
+              <span class="badge ${b.status === 'ملغاة' ? 'cancel' : 'ok'}">${b.status}</span>
+            </div>
+          </div>
+          <div class="price">${b.price.toLocaleString('en-US')} ج.س</div>
+          <a class="btn small secondary" href="booking-detail.html?code=${encodeURIComponent(b.code)}">التفاصيل</a>
+          ${b.status !== 'ملغاة' ? `<button class="btn small danger" onclick="cancelBooking('${b.code}')">إلغاء</button>` : ''}
+        </div>
+      `).join('');
+    })
+    .catch(() => { bookingsCard.innerHTML = '<p>تعذر الاتصال بالسيرفر</p>'; });
+}
+
+function cancelBooking(code) {
+  if (!confirm('هل أنت متأكد من الإلغاء؟')) return;
+  fetch('/api/booking/' + encodeURIComponent(code) + '/cancel', { method: 'POST' })
+    .then(r => r.json())
+    .then(data => {
+      if (!data.ok) { alert(data.error || 'تعذر الإلغاء'); return; }
+      loadBookings();
+    });
+}
+
+loadBookings();
+</script>
+</body>
+</html>
